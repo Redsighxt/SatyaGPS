@@ -1,0 +1,257 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Open+Sans:wght@400;600;700&display=swap');
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+
+  /* Custom colors for math app */
+  --coral: 6 93% 71%; /* #FF6B6B */
+  --turquoise: 177 70% 60%; /* #4ECDC4 */
+  --skyblue: 200 77% 55%; /* #45B7D1 */
+  --mint: 152 50% 75%; /* #96CEB4 */
+  --lightyellow: 51 100% 82%; /* #FFEAA7 */
+  --plum: 300 47% 75%; /* #DDA0DD */
+  --darkgray: 213 20% 21%; /* #2D3436 */
+  --mediumgray: 209 18% 43%; /* #636E72 */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
+/* Custom utility classes */
+.font-fredoka {
+  font-family: 'Fredoka One', cursive;
+}
+
+.bg-coral {
+  background-color: hsl(var(--coral));
+}
+
+.bg-turquoise {
+  background-color: hsl(var(--turquoise));
+}
+
+.bg-skyblue {
+  background-color: hsl(var(--skyblue));
+}
+
+.bg-mint {
+  background-color: hsl(var(--mint));
+}
+
+.bg-lightyellow {
+  background-color: hsl(var(--lightyellow));
+}
+
+.bg-plum {
+  background-color: hsl(var(--plum));
+}
+
+.bg-darkgray {
+  background-color: hsl(var(--darkgray));
+}
+
+.bg-mediumgray {
+  background-color: hsl(var(--mediumgray));
+}
+
+.text-coral {
+  color: hsl(var(--coral));
+}
+
+.text-turquoise {
+  color: hsl(var(--turquoise));
+}
+
+.text-skyblue {
+  color: hsl(var(--skyblue));
+}
+
+.text-mint {
+  color: hsl(var(--mint));
+}
+
+.text-lightyellow {
+  color: hsl(var(--lightyellow));
+}
+
+.text-plum {
+  color: hsl(var(--plum));
+}
+
+.text-darkgray {
+  color: hsl(var(--darkgray));
+}
+
+.text-mediumgray {
+  color: hsl(var(--mediumgray));
+}
+
+.border-coral {
+  border-color: hsl(var(--coral));
+}
+
+.border-turquoise {
+  border-color: hsl(var(--turquoise));
+}
+
+.border-skyblue {
+  border-color: hsl(var(--skyblue));
+}
+
+.border-mint {
+  border-color: hsl(var(--mint));
+}
+
+.border-plum {
+  border-color: hsl(var(--plum));
+}
+
+/* Animations */
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite alternate;
+}
+
+/* Drag and drop styles */
+.draggable {
+  cursor: grab;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.draggable:active {
+  cursor: grabbing;
+  transform: scale(1.1);
+}
+
+.drop-zone {
+  transition: all 0.3s ease;
+}
+
+.drop-zone.drag-over {
+  background-color: hsl(var(--skyblue) / 0.2);
+  border: 2px dashed hsl(var(--skyblue));
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .draggable {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  button {
+    min-height: 48px;
+    padding: 12px 24px;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  :root {
+    --coral: 0 100% 50%;
+    --turquoise: 180 100% 50%;
+    --skyblue: 210 100% 50%;
+    --mint: 120 100% 50%;
+    --plum: 300 100% 50%;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-slow,
+  .animate-wiggle,
+  .animate-float {
+    animation: none;
+  }
+}
