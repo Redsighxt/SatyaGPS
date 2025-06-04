@@ -1,0 +1,36 @@
+Create a web-based educational application designed for students under 5th grade to learn and visualize fundamental math concepts in an engaging and interactive way. The app should be intuitive, colorful, and user-friendly, with a focus on making abstract math concepts accessible through visualizations and interactive elements. The application should include the following features and requirements:
+
+1. **Core Math Concepts**:
+   - **Algebraic Operations**: Teach basic operations (addition, subtraction, multiplication, division) with interactive visualizations, such as draggable objects, number lines, or animated counters to demonstrate how numbers combine or break apart.
+   - **Place Value**: Include an interactive module to explore place value (units, tens, hundreds) using visual aids like base-10 blocks, number charts, or place value grids. Allow users to build and decompose numbers to understand their structure.
+   - **LCM and HCF**: Introduce Least Common Multiple (LCM) and Highest Common Factor (HCF) with simple, visual methods like number lines, factor trees, or interactive Venn diagrams to show relationships between numbers.
+   - **Squares and Square Roots**: Provide a module for squares (e.g., visualizing 3² as a 3x3 grid) and square roots with interactive grids or animations to show the inverse relationship. Keep explanations simple and visual for young learners.
+
+2. **Visualization and Interactivity**:
+   - Use colorful, animated graphics and drag-and-drop interfaces to make learning engaging.
+   - Include step-by-step tutorials with voiceovers or text prompts to guide students through each concept.
+   - Provide interactive quizzes or games (e.g., matching games, puzzles) to reinforce learning after each module.
+   - Ensure visualizations are dynamic, such as showing how numbers grow or shrink during algebraic operations or how place value blocks stack to form larger numbers.
+
+3. **User Interface and Experience**:
+   - Design a clean, responsive web interface optimized for desktops, tablets, and touch devices, with large buttons and simple navigation suitable for young children.
+   - Use a playful, kid-friendly theme with bright colors, fun characters, or mascots to maintain engagement.
+   - Include a progress tracker to show completed modules and reward students with badges or animations for milestones.
+
+4. **Technical Requirements**:
+   - Build the app using modern web technologies (e.g., HTML5, CSS3, JavaScript, and frameworks like React or Vue.js for interactivity).
+   - Ensure compatibility with major browsers (Chrome, Firefox, Safari, Edge).
+   - Host the app on a reliable platform with minimal latency for smooth performance.
+   - Implement accessibility features (e.g., screen reader support, high-contrast mode) to accommodate diverse learners.
+
+5. **Educational Approach**:
+   - Align content with elementary math curricula for students under 5th grade, ensuring age-appropriate explanations and examples.
+   - Use scaffolding techniques, starting with simple examples and gradually increasing complexity within each module.
+   - Include hints and feedback for incorrect answers to encourage learning without frustration.
+
+6. **Additional Features**:
+   - Add a parent/teacher dashboard to track student progress, view completed activities, and suggest areas for improvement.
+   - Include a "practice mode" with randomized problems for each concept to reinforce learning.
+   - Allow customization options, such as adjusting difficulty levels or selecting specific topics for focused learning.
+
+The app should prioritize simplicity, engagement, and visual learning to help young students grasp math concepts confidently. Provide a prototype with sample modules for algebraic operations, place value, LCM/HCF, and squares/square roots, ensuring each module is interactive and visually rich.
