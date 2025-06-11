@@ -1,68 +1,38 @@
-import { useState } from "react";
+import { PanInfo, motion, useAnimation } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface DraggableNumberProps {
   value: number;
-  color: string;
   onChange: (value: number) => void;
-  min?: number;
-  max?: number;
+  color: string;
 }
 
-export default function DraggableNumber({ 
-  value, 
-  color, 
-  onChange, 
-  min = 0, 
-  max = 20 
-}: DraggableNumberProps) {
-  const [isDragging, setIsDragging] = useState(false);
+export default function DraggableNumber({ value, onChange, color }: DraggableNumberProps) {
+  const controls = useAnimation();
+  const [dragStartValue, setDragStartValue] = useState(0);
 
-  const handleMouseDown = () => {
-    setIsDragging(true);
+  const handleDrag = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const newValue = Math.max(0, Math.round(dragStartValue + info.offset.x / 20));
+    onChange(newValue);
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
-  const handleIncrement = () => {
-    if (value < max) {
-      onChange(value + 1);
-    }
-  };
-
-  const handleDecrement = () => {
-    if (value > min) {
-      onChange(value - 1);
-    }
-  };
+  useEffect(() => {
+    controls.start({
+      scale: [1, 1.2, 1],
+      transition: { duration: 0.3 }
+    });
+  }, [value, controls]);
 
   return (
-    <div className="flex flex-col items-center space-y-2">
-      <button
-        onClick={handleIncrement}
-        className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors"
-      >
-        +
-      </button>
-      
-      <div
-        className={`w-16 h-16 bg-${color} rounded-2xl flex items-center justify-center text-white font-bold text-2xl cursor-move hover:scale-110 transition-transform shadow-lg draggable ${
-          isDragging ? 'scale-110' : ''
-        }`}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
-        {value}
-      </div>
-      
-      <button
-        onClick={handleDecrement}
-        className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-lg font-bold hover:bg-gray-300 transition-colors"
-      >
-        -
-      </button>
-    </div>
+    <motion.div 
+      drag="x" 
+      dragConstraints={{ left: 0, right: 0 }}
+      onDragStart={() => setDragStartValue(value)}
+      onDrag={handleDrag}
+      animate={controls}
+      className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg cursor-grab active:cursor-grabbing bg-${color}`}
+    >
+      {value}
+    </motion.div>
   );
 }

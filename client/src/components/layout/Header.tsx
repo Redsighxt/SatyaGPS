@@ -4,7 +4,7 @@ import { Rocket, Star, User } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 
 export default function Header() {
-  const { data: progress } = useProgress();
+  const { data: progress } = useProgress(1);
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">

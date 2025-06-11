@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle, RotateCcw, Play } from 'lucide-react';
+import { ArrowLeft, CheckCircle, RotateCcw, Play, Medal } from 'lucide-react';
 import { Link } from 'wouter';
 import { DragDropNumber } from '@/components/learning/DragDropNumber';
-import { NumberLine } from '@/components/learning/NumberLine';
-import { useProgress } from '@/hooks/useProgress';
+import NumberLine from '@/components/NumberLine';
+import { useUpdateProgress, useAwardBadge } from '@/hooks/use-progress';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import Header from "@/components/Header";
+import DraggableNumber from "@/components/DraggableNumber";
 
-export default function AlgebraicOperations() {
+export default function AlgebraicOperationsModule() {
   const [currentProblem, setCurrentProblem] = useState({ num1: 3, num2: 4, operation: '+' });
   const [userAnswer, setUserAnswer] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
@@ -15,7 +18,9 @@ export default function AlgebraicOperations() {
   const [problemsCompleted, setProblemsCompleted] = useState(0);
   const [startTime] = useState(Date.now());
   
-  const { updateProgress } = useProgress();
+  const { mutate: updateProgress } = useUpdateProgress();
+  const { mutate: awardBadge } = useAwardBadge();
+  const { toast } = useToast();
 
   const correctAnswer = currentProblem.operation === '+' 
     ? currentProblem.num1 + currentProblem.num2
@@ -71,223 +76,105 @@ export default function AlgebraicOperations() {
   useEffect(() => {
     if (problemsCompleted >= 5) {
       const timeSpent = Math.floor((Date.now() - startTime) / 1000);
-      updateProgress('algebraic-operations', score, timeSpent, true);
+      updateProgress({ studentId: 1, moduleId: 'algebraic-operations', score, timeSpent });
+      awardBadge({ studentId: 1, badgeType: 'module', badgeName: 'Algebraic Operations Master' });
+      toast({
+        title: "Badge Unlocked!",
+        description: "You earned the 'Algebraic Operations Master' badge!",
+        action: <Medal className="text-yellow-500" />,
+      });
     }
-  }, [problemsCompleted, score, startTime, updateProgress]);
+  }, [problemsCompleted, score, startTime, updateProgress, awardBadge, toast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-coral via-red-400 to-pink-400">
-      {/* Header */}
-      <div className="bg-white shadow-lg">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen">
+      <Header />
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between mb-8">
             <Link href="/">
-              <Button variant="ghost" size="sm">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+              <Button variant="outline" className="bg-white/20 text-white border-white/30 hover:bg-white/30">
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Home
               </Button>
             </Link>
-            <h1 className="text-2xl font-fredoka text-darkgray">Number Magic</h1>
-            <div className="flex items-center space-x-4">
-              <div className="text-center">
-                <div className="text-xl font-bold text-coral">{score}</div>
-                <div className="text-sm text-mediumgray">Score</div>
-              </div>
-              <Button onClick={resetModule} variant="outline" size="sm">
-                <RotateCcw className="w-4 h-4 mr-2" />
-                Reset
-              </Button>
+            <div className="text-center">
+              <h1 className="text-3xl md:text-4xl font-fredoka text-white mb-2">
+                Number Magic
+              </h1>
+              <p className="text-white/90 text-lg">Learn addition, subtraction, multiplication and division!</p>
             </div>
+            <div className="w-40" />
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {problemsCompleted < 5 ? (
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-white rounded-3xl p-8 shadow-2xl">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-fredoka text-darkgray mb-4">
-                  Solve This Problem!
-                </h2>
-                <div className="bg-lightyellow rounded-2xl p-6 mb-6">
-                  <div className="text-6xl font-bold text-darkgray">
-                    {currentProblem.num1} {currentProblem.operation} {currentProblem.num2} = ?
+      <section className="py-8">
+        <div className="container mx-auto px-4">
+          <div className="bg-white rounded-3xl p-8 shadow-2xl">
+            <h3 className="text-2xl font-fredoka text-darkgray text-center mb-8">
+              Interactive Math Operations
+            </h3>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <h4 className="text-xl font-fredoka text-darkgray text-center">
+                  Drag and Drop Math
+                </h4>
+                <NumberLine value={correctAnswer} max={20} />
+                
+                <div className="flex justify-center items-center space-x-4">
+                  <DraggableNumber 
+                    value={currentProblem.num1} 
+                    color="coral"
+                    onChange={(value) => setCurrentProblem({ ...currentProblem, num1: value }) }
+                  />
+                  <select 
+                    value={currentProblem.operation}
+                    onChange={(e) => setCurrentProblem({ ...currentProblem, operation: e.target.value }) }
+                    className="text-4xl font-bold text-darkgray bg-transparent border-0 focus:outline-none"
+                  >
+                    {['+', '-', '*'].map(op => (
+                      <option key={op} value={op}>{op}</option>
+                    ))}
+                  </select>
+                  <DraggableNumber 
+                    value={currentProblem.num2} 
+                    color="turquoise"
+                    onChange={(value) => setCurrentProblem({ ...currentProblem, num2: value }) }
+                  />
+                  <span className="text-4xl font-bold text-darkgray">=</span>
+                  <div className="w-16 h-16 bg-mint rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg">
+                    {correctAnswer.toFixed(1)}
                   </div>
                 </div>
               </div>
 
-              {/* Interactive Elements */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                
-                {/* Drag and Drop */}
-                <div className="space-y-6">
-                  <h3 className="text-xl font-fredoka text-darkgray text-center">
-                    Drag Numbers to Answer
-                  </h3>
-                  
-                  <div className="flex justify-center items-center space-x-4 mb-6">
-                    <DragDropNumber value={currentProblem.num1} color="coral" />
-                    <div className="text-4xl font-bold text-darkgray">{currentProblem.operation}</div>
-                    <DragDropNumber value={currentProblem.num2} color="turquoise" />
-                    <div className="text-4xl font-bold text-darkgray">=</div>
-                    {userAnswer !== null ? (
-                      <motion.div
-                        className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg ${
-                          isCorrect ? 'bg-mint' : 'bg-red-400'
-                        }`}
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                      >
-                        {userAnswer}
-                      </motion.div>
-                    ) : (
-                      <div className="w-16 h-16 border-4 border-dashed border-gray-300 rounded-2xl flex items-center justify-center">
-                        <span className="text-gray-400">?</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Answer Options */}
-                  <div className="grid grid-cols-3 gap-4">
-                    {[correctAnswer - 1, correctAnswer, correctAnswer + 1].sort(() => Math.random() - 0.5).map((answer, index) => (
-                      <button
-                        key={index}
-                        onClick={() => checkAnswer(answer)}
-                        disabled={userAnswer !== null}
-                        className="w-full h-16 bg-mint text-white font-bold text-xl rounded-2xl hover:bg-green-500 transition-colors disabled:opacity-50"
-                      >
-                        {answer}
-                      </button>
+              <div className="space-y-6">
+                <h4 className="text-xl font-fredoka text-darkgray text-center">
+                  Count with Objects
+                </h4>
+                <div className="bg-lightyellow rounded-xl p-4 min-h-32">
+                  <div className="grid grid-cols-5 gap-2">
+                    {Array(Math.floor(Math.abs(correctAnswer))).fill(0).map((_, i) => (
+                      <div 
+                        key={i}
+                        className="w-8 h-8 bg-coral rounded-full shadow-md animate-bounce-slow" 
+                        style={{ animationDelay: `${i * 0.1}s` }}
+                      />
                     ))}
                   </div>
                 </div>
-
-                {/* Visual Representation */}
-                <div className="space-y-6">
-                  <h3 className="text-xl font-fredoka text-darkgray text-center">
-                    See It Visually
-                  </h3>
-                  
-                  {currentProblem.operation === '+' && (
-                    <div className="bg-lightyellow rounded-xl p-4">
-                      <div className="grid grid-cols-10 gap-1">
-                        {Array(currentProblem.num1 + currentProblem.num2).fill(null).map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className={`w-6 h-6 rounded-full shadow-md ${
-                              i < currentProblem.num1 ? 'bg-coral' : 'bg-turquoise'
-                            }`}
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: i * 0.1 }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {currentProblem.operation === '-' && (
-                    <div className="bg-lightyellow rounded-xl p-4">
-                      <div className="grid grid-cols-10 gap-1">
-                        {Array(currentProblem.num1).fill(null).map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className={`w-6 h-6 rounded-full shadow-md ${
-                              i < correctAnswer ? 'bg-mint' : 'bg-gray-300'
-                            }`}
-                            initial={{ scale: 1 }}
-                            animate={{ 
-                              scale: i < correctAnswer ? 1 : 0,
-                              opacity: i < correctAnswer ? 1 : 0.3 
-                            }}
-                            transition={{ delay: i * 0.1 }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <NumberLine 
-                    min={0} 
-                    max={Math.max(20, correctAnswer + 5)} 
-                    currentValue={userAnswer || undefined}
-                    onValueChange={checkAnswer}
-                  />
-                </div>
               </div>
-
-              {/* Feedback */}
-              {isCorrect !== null && (
-                <motion.div
-                  className={`text-center p-4 rounded-2xl ${
-                    isCorrect ? 'bg-mint text-white' : 'bg-red-400 text-white'
-                  }`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                >
-                  <div className="flex items-center justify-center space-x-2">
-                    {isCorrect ? (
-                      <>
-                        <CheckCircle className="w-6 h-6" />
-                        <span className="text-xl font-bold">Great job! You got it right!</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-xl font-bold">Try again! The answer is {correctAnswer}</span>
-                        <Button onClick={generateNewProblem} className="ml-4">
-                          Next Problem
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Progress */}
-              <div className="mt-8 text-center">
-                <div className="bg-gray-200 rounded-full h-3 mb-2">
-                  <motion.div
-                    className="bg-coral h-3 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(problemsCompleted / 5) * 100}%` }}
-                  />
-                </div>
-                <p className="text-mediumgray">
-                  Problem {problemsCompleted} of 5 completed
-                </p>
-              </div>
+            </div>
+            <div className="text-center mt-8">
+              <Link href={`/module/algebraic-operations/challenge`}>
+                <Button>Start Challenge</Button>
+              </Link>
             </div>
           </div>
-        ) : (
-          /* Completion Screen */
-          <motion.div
-            className="max-w-2xl mx-auto bg-white rounded-3xl p-8 shadow-2xl text-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <div className="text-6xl mb-4">🎉</div>
-            <h2 className="text-3xl font-fredoka text-darkgray mb-4">
-              Congratulations!
-            </h2>
-            <p className="text-xl text-mediumgray mb-6">
-              You've completed the Number Magic module with a score of {score} points!
-            </p>
-            <div className="flex justify-center space-x-4">
-              <Link href="/">
-                <Button size="lg">
-                  Back to Home
-                </Button>
-              </Link>
-              <Button onClick={resetModule} variant="outline" size="lg">
-                <Play className="w-5 h-5 mr-2" />
-                Play Again
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

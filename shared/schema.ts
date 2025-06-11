@@ -39,6 +39,15 @@ export const quizResults = pgTable("quiz_results", {
   answeredAt: timestamp("answered_at").defaultNow().notNull(),
 });
 
+export const challengeScores = pgTable("challenge_scores", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  moduleId: text("module_id").notNull(),
+  difficulty: text("difficulty").notNull(),
+  score: integer("score").notNull(),
+  earnedAt: timestamp("earned_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   password: true,
@@ -68,6 +77,13 @@ export const insertQuizResultSchema = createInsertSchema(quizResults).pick({
   correct: true,
 });
 
+export const insertChallengeScoreSchema = createInsertSchema(challengeScores).pick({
+  userId: true,
+  moduleId: true,
+  difficulty: true,
+  score: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type UserProgress = typeof userProgress.$inferSelect;
@@ -76,3 +92,5 @@ export type Badge = typeof badges.$inferSelect;
 export type InsertBadge = z.infer<typeof insertBadgeSchema>;
 export type QuizResult = typeof quizResults.$inferSelect;
 export type InsertQuizResult = z.infer<typeof insertQuizResultSchema>;
+export type ChallengeScore = typeof challengeScores.$inferSelect;
+export type InsertChallengeScore = z.infer<typeof insertChallengeScoreSchema>;

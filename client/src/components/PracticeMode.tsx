@@ -1,5 +1,21 @@
 import { MessageCircleQuestion, Gamepad2, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+
+const practiceStyles = {
+  "Quick Quiz": {
+    bg: "bg-gradient-to-br from-coral to-red-400",
+    text: "text-coral",
+  },
+  "Math Games": {
+    bg: "bg-gradient-to-br from-turquoise to-teal-400",
+    text: "text-turquoise",
+  },
+  "Daily Challenge": {
+    bg: "bg-gradient-to-br from-plum to-purple-400",
+    text: "text-plum",
+  },
+};
 
 export default function PracticeMode() {
   const practiceOptions = [
@@ -7,21 +23,18 @@ export default function PracticeMode() {
       title: "Quick Quiz",
       description: "Test your knowledge with random questions",
       icon: MessageCircleQuestion,
-      color: "coral",
       action: "Start Quiz"
     },
     {
       title: "Math Games", 
       description: "Play fun matching and puzzle games",
       icon: Gamepad2,
-      color: "turquoise",
       action: "Play Games"
     },
     {
       title: "Daily Challenge",
       description: "Complete today's special challenge", 
       icon: Trophy,
-      color: "plum",
       action: "Take Challenge"
     }
   ];
@@ -41,11 +54,12 @@ export default function PracticeMode() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {practiceOptions.map((option) => {
             const IconComponent = option.icon;
+            const styles = practiceStyles[option.title as keyof typeof practiceStyles];
             
             return (
               <div 
                 key={option.title}
-                className={`bg-gradient-to-br from-${option.color} to-${option.color} rounded-3xl p-6 text-white shadow-xl`}
+                className={`rounded-3xl p-6 text-white shadow-xl ${styles.bg}`}
               >
                 <div className="text-center">
                   <div className="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -53,9 +67,11 @@ export default function PracticeMode() {
                   </div>
                   <h4 className="text-xl font-fredoka mb-3">{option.title}</h4>
                   <p className="mb-6 opacity-90">{option.description}</p>
-                  <Button className={`w-full bg-white text-${option.color} font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors`}>
-                    {option.action}
-                  </Button>
+                  <Link href="/dashboard">
+                    <Button className={`w-full bg-white font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors ${styles.text}`}>
+                      {option.action}
+                    </Button>
+                  </Link>
                 </div>
               </div>
             );

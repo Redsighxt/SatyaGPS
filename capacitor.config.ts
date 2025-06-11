@@ -1,6 +1,8 @@
+import { CapacitorConfig } from '@capacitor/cli';
+
 const config: CapacitorConfig = {
   appId: 'com.satya.GpsBursum',
-  appName: 'Satya GPS Bursum',
+  appName: 'SatyaGPSmaths',
   webDir: 'dist/public',
   bundledWebRuntime: false
 };

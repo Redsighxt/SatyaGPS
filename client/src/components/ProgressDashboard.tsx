@@ -1,8 +1,26 @@
 import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/hooks/useAuth";
 import { Medal, Star, Trophy } from "lucide-react";
 
 export default function ProgressDashboard() {
-  const { progress, badges, overallProgress, currentStreak } = useProgress(1); // Demo user ID
+  const { user, isLoading: isAuthLoading } = useAuth();
+  const { progress, badges, overallProgress, currentStreak } = useProgress(user?.id ?? 0);
+
+  if (isAuthLoading) {
+    return <div>Loading Progress...</div>;
+  }
+
+  if (!user) {
+    return (
+      <section className="py-8 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h3 className="text-2xl font-fredoka text-darkgray">Login to see your progress</h3>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-8 bg-white">
@@ -57,4 +75,4 @@ export default function ProgressDashboard() {
       </div>
     </section>
   );
-}
+} 

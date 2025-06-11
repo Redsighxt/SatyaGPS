@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import DragDropMath from "@/components/interactive/drag-drop-math";
 import { useUpdateProgress } from "@/hooks/use-progress";
 import { generateRandomProblem, calculateScore } from "@/lib/math-utils";

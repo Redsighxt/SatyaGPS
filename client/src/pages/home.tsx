@@ -7,8 +7,17 @@ import PracticeMode from "@/components/PracticeMode";
 import TeacherDashboard from "@/components/TeacherDashboard";
 import { Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRef } from "react";
+import Leaderboard from "@/components/Leaderboard";
+import FocusArea from "@/components/FocusArea";
 
 export default function Home() {
+  const learningModulesRef = useRef<HTMLDivElement>(null);
+
+  const scrollToLearningModules = () => {
+    learningModulesRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -28,7 +37,10 @@ export default function Home() {
             <p className="text-xl md:text-2xl text-white mb-8 max-w-2xl mx-auto">
               Join our fun learning journey and discover amazing math concepts through games and interactive activities!
             </p>
-            <Button className="bg-coral hover:bg-red-500 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+            <Button
+              onClick={scrollToLearningModules}
+              className="bg-coral hover:bg-red-500 text-white font-bold py-4 px-8 rounded-full text-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+            >
               <Rocket className="mr-3 h-6 w-6" />
               Start Learning
             </Button>
@@ -36,12 +48,54 @@ export default function Home() {
         </div>
       </section>
 
-      <ProgressDashboard />
+      <div ref={learningModulesRef}>
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-3xl md:text-4xl font-fredoka text-darkgray mb-4">Explore Our Learning Modules</h3>
+          <p className="text-xl text-mediumgray max-w-3xl mx-auto mb-8">
+            Dive into various math topics with our engaging, interactive modules. Each module is designed to make learning a joyful experience, with visual aids and fun exercises.
+          </p>
+        </div>
+      </section>
+
       <LearningModules />
-      <InteractiveDemo />
-      <PlaceValueDemo />
+      </div>
+
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-3xl md:text-4xl font-fredoka text-darkgray mb-4">Practice with Fun Games</h3>
+          <p className="text-xl text-mediumgray max-w-3xl mx-auto mb-8">
+            Test your skills with exciting quizzes and challenges. Our games are a great way to reinforce what you've learned and build confidence in your math abilities.
+          </p>
+        </div>
+      </section>
+      
       <PracticeMode />
+
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4 text-center">
+          <h3 className="text-3xl md:text-4xl font-fredoka text-darkgray mb-4">Track Your Progress</h3>
+          <p className="text-xl text-mediumgray max-w-3xl mx-auto mb-8">
+            Watch your skills grow! Our dashboard lets you see your progress, view completed modules, and celebrate your achievements with cool badges.
+          </p>
+        </div>
+      </section>
+
+      <ProgressDashboard />
+      
       <TeacherDashboard />
+
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <FocusArea />
+        </div>
+      </section>
+
+      <section className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <Leaderboard />
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="bg-darkgray text-white py-12">

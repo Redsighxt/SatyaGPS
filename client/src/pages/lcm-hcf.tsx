@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import NumberLine from "@/components/interactive/number-line";
 import { gcd, lcm, getFactors, getCommonFactors, getMultiples, getCommonMultiples } from "@/lib/math-utils";
 import { ArrowLeft, RotateCcw, Trophy } from "lucide-react";

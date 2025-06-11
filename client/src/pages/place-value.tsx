@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import Header from "@/components/layout/header";
-import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import PlaceValueBlocks from "@/components/interactive/place-value-blocks";
 import { ArrowLeft, RotateCcw, Trophy, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";

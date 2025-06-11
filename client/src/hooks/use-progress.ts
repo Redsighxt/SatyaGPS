@@ -1,16 +1,25 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { Student, Progress, Achievement } from "@shared/schema";
+import { User, UserProgress, Badge } from "@shared/schema";
+
+export interface ProgressData {
+  progress: UserProgress[];
+  badges: Badge[];
+  totalPoints: number;
+  overallProgress: number;
+  completedModules: number;
+  currentStreak: number;
+}
 
 export function useProgress(studentId: number = 1) {
-  return useQuery({
+  return useQuery<ProgressData>({
     queryKey: ["/api/progress", studentId],
     enabled: !!studentId,
   });
 }
 
 export function useStudent(studentId: number = 1) {
-  return useQuery<Student>({
+  return useQuery<User>({
     queryKey: ["/api/students", studentId],
     enabled: !!studentId,
   });
@@ -46,15 +55,29 @@ export function useCompleteModule() {
   });
 }
 
+export function useAwardBadge() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (data: { studentId: number; badgeType: string; badgeName: string }) => {
+      const response = await apiRequest("POST", "/api/badges", data);
+      return response.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/achievements", variables.studentId] });
+    },
+  });
+}
+
 export function useAchievements(studentId: number = 1) {
-  return useQuery<Achievement[]>({
+  return useQuery<Badge[]>({
     queryKey: ["/api/achievements", studentId],
     enabled: !!studentId,
   });
 }
 
 export function useAllStudents() {
-  return useQuery<Student[]>({
+  return useQuery<User[]>({
     queryKey: ["/api/students"],
   });
 }

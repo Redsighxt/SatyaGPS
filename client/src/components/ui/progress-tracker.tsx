@@ -3,7 +3,7 @@ import { Medal, Star, Trophy } from "lucide-react";
 import { useProgress } from "@/hooks/use-progress";
 
 export default function ProgressTracker() {
-  const { data: progress, isLoading } = useProgress();
+  const { data: progress, isLoading } = useProgress(1);
 
   if (isLoading) {
     return (
@@ -21,9 +21,9 @@ export default function ProgressTracker() {
     );
   }
 
-  const progressPercentage = progress?.overallProgress || 65;
-  const completedModules = progress?.completedModules || 8;
-  const currentStreak = progress?.currentStreak || 5;
+  const progressPercentage = progress?.overallProgress ?? 65;
+  const completedModules = progress?.completedModules ?? 8;
+  const currentStreak = progress?.currentStreak ?? 5;
 
   return (
     <motion.div 
